@@ -30,17 +30,17 @@ export default function RootLayout({
     >
       <body>
         <header>
-          <div className="flex gap-4">
+          <nav className="flex">
             <Link href="/" className="p-2 rounded hover:bg-gray-200">
               메인
             </Link>
             <Link href="/posts" className="p-2 rounded hover:bg-gray-200">
               글목록
             </Link>
-          </div>
+          </nav>
         </header>
         {children}
-        <footer>풋터</footer>
+        <footer className="p-2">풋터</footer>
       </body>
     </html>
   )
