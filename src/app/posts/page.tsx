@@ -1,21 +1,29 @@
 'use client'
 
+import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
+interface Post {
+  id: number
+  title: string
+  content: string
+}
+
 export default function PostsList() {
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState<Post[]>([])
 
-  //useEffect를 사용해서 외부 시스템과 컴포넌트를 동기화하는 hocks
+  const fetchPosts = async () => {
+    let { data: posts, error } = await supabase.from('posts').select('*')
+    if (posts) {
+      setPosts(posts ?? [])
+    }
+  }
+
   useEffect(() => {
-    fetch('https://dummyjson.com/posts')
-      .then((res) => res.json())
-      // posts안에 배열이 들어있음 더미 데이터를 셋 포스트에 넣어줌
-      .then((res) => setPosts(res.posts))
+    fetchPosts()
   }, [])
-
   return (
-    // posts 배열을 map으로 돌려서 li로 출력
     <ul>
       {posts.map((post) => (
         <li key={post.id}>
