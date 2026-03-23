@@ -1,13 +1,21 @@
 'use client'
+import { supabase } from '@/lib/supabase'
 import { useState } from 'react'
-
 export default function SignUp() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleOnSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleOnSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(email, password)
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    })
+    if (error) {
+      console.log(error)
+    } else {
+      alert('회원가입 성공')
+    }
   }
 
   return (
