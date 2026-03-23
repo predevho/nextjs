@@ -1,23 +1,23 @@
 'use client'
 import { supabase } from '@/lib/supabase'
 import { useState } from 'react'
-export default function SignUp() {
+
+export default function Signin() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const handleOnSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const { error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
     if (error) {
-      console.log(error)
+      alert('이메일 또는 비밀번호가 틀렸습니다.')
     } else {
-      alert('회원가입 성공')
+      alert('로그인 성공')
     }
   }
-
   return (
     <form className="flex flex-col gap-2 items-start" onSubmit={handleOnSubmit}>
       <input
@@ -35,7 +35,7 @@ export default function SignUp() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button className="p-2 rounded hover:bg-gray-200 hover:text-black">
-        회원가입
+        로그인
       </button>
     </form>
   )
