@@ -35,9 +35,15 @@ export default function PostDetail() {
     setPost(post)
   }
   const handleOnDelete = async (id: number) => {
-    const { error } = await supabase.from('posts').delete().eq('id', id)
+    const { data, error } = await supabase
+      .from('posts')
+      .delete()
+      .eq('id', id)
+      .select()
     if (error) {
       console.log(error)
+    } else if (!data || data.length === 0) {
+      alert('권한이 없습니다.')
     } else {
       alert('삭제 성공')
       router.push('/posts')
@@ -59,15 +65,34 @@ export default function PostDetail() {
 
   const handleOnSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('comments')
-      .insert({ post_id: id as string, content: content })
+      .insert({ post_id: id as string, content })
+      .select()
     if (error) {
       console.log(error)
+    } else if (!data || data.length === 0) {
+      alert('권한이 없습니다.')
     } else {
       alert('댓글 작성 성공')
       fetchComments()
       setContent('')
+    }
+  }
+
+  const handleOnDeleteComment = async (id: number) => {
+    const { data, error } = await supabase
+      .from('comments')
+      .delete()
+      .eq('id', id)
+      .select()
+    if (error) {
+      console.log(error)
+    } else if (!data || data.length === 0) {
+      alert('권한이 없습니다.')
+    } else {
+      alert('삭제 성공')
+      fetchComments()
     }
   }
 
@@ -94,6 +119,19 @@ export default function PostDetail() {
           />
           <button>댓글 작성</button>
         </form>
+        <ul>
+          {comments?.map((comment) => (
+            <li key={comment.id}>
+              -{comment.content}
+              <button
+                onClick={() => handleOnDeleteComment(comment.id)}
+                className="border p-1"
+              >
+                X
+              </button>
+            </li>
+          ))}
+        </ul>
       </ul>
       <button
         className="p-2 rounded border border-black hover:bg-gray-200 hover:text-black"
