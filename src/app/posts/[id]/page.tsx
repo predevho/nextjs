@@ -24,6 +24,7 @@ export default function PostDetail() {
   const router = useRouter()
   const [post, setPost] = useState<Post | null>(null)
   const [comments, setComments] = useState<Comment[]>([])
+  const [content, setContent] = useState<string>('')
 
   const fetchPosts = async () => {
     const { data: post, error } = await supabase
@@ -56,6 +57,20 @@ export default function PostDetail() {
     fetchComments()
   }, [])
 
+  const handleOnSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const { error } = await supabase
+      .from('comments')
+      .insert({ post_id: id as string, content: content })
+    if (error) {
+      console.log(error)
+    } else {
+      alert('댓글 작성 성공')
+      fetchComments()
+      setContent('')
+    }
+  }
+
   if (!post) {
     return <div>Loading...</div>
   }
@@ -69,6 +84,16 @@ export default function PostDetail() {
         {comments?.map((comment) => (
           <li key={comment.id}>{comment.content}</li>
         ))}
+        <form onSubmit={handleOnSubmit}>
+          <input
+            type="text"
+            name="content"
+            value={content}
+            placeholder="댓글"
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <button>댓글 작성</button>
+        </form>
       </ul>
       <button
         className="p-2 rounded border border-black hover:bg-gray-200 hover:text-black"
