@@ -35,7 +35,9 @@ export default function NewPost() {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      <button className="p-2 rounded hover:bg-gray-200">등록</button>
+      <button className="p-2 rounded hover:bg-gray-200 hover:text-black">
+        등록
+      </button>
     </form>
   )
 }

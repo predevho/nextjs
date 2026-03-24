@@ -14,7 +14,10 @@ export default function PostsList() {
   const [posts, setPosts] = useState<Post[]>([])
 
   const fetchPosts = async () => {
-    let { data: posts, error } = await supabase.from('posts').select('*')
+    let { data: posts, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false })
     if (posts) {
       setPosts(posts ?? [])
     }
