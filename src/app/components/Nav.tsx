@@ -50,12 +50,12 @@ export default function Nav() {
       </Link>
       {user ? (
         <>
-          <span className="p-2 rounded hover:bg-gray-200">
+          <span className="p-2 rounded hover:bg-gray-200 hover:text-black">
             {user.email}님 반갑습니다.
           </span>
           <button
             onClick={handleOnLogout}
-            className="p-2 rounded hover:bg-gray-200"
+            className="p-2 rounded hover:bg-gray-200 hover:text-black"
           >
             로그아웃
           </button>

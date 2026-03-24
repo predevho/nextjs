@@ -35,6 +35,9 @@ export default function PostsList() {
           </Link>
         </li>
       ))}
+      <Link href="/posts/new" className="p-2 rounded hover:bg-gray-200">
+        글쓰기
+      </Link>
     </ul>
   )
 }
